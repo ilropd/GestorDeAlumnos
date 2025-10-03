@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -54,14 +55,7 @@ fun StudentDetailView(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(student?.name ?: "Student Detail") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
-                            tint = Color.White)
-                    }
-                },
+            TopAppBar(title = { Text(student?.name ?: "Student Detail")},
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = Color.White
@@ -78,6 +72,7 @@ fun StudentDetailView(
                 ContentStudentDetailView(
                     student = it,
                     modifier = Modifier.fillMaxSize(),
+                    onBackClick = onBackClick
                 )
             } ?: run {
                 Column(
@@ -95,7 +90,9 @@ fun StudentDetailView(
 }
 
 @Composable
-fun ContentStudentDetailView(student: Student, modifier: Modifier = Modifier) {
+fun ContentStudentDetailView(student: Student,
+                             modifier: Modifier = Modifier,
+                             onBackClick: () -> Unit) {
     Column(
         modifier = modifier
             .padding(16.dp)
@@ -140,5 +137,11 @@ fun ContentStudentDetailView(student: Student, modifier: Modifier = Modifier) {
             text = "Course: ${student.course}",
             style = MaterialTheme.typography.bodyLarge
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = { onBackClick() }) {
+            Text("Back")
+        }
     }
 }
